@@ -3,55 +3,823 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact - Clubul de Lectură</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Contactează clubul de lectură LiteraVie">
+  <title>Contact - LiteraVie</title>
+  <style>
+    /* Reset și variabile */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #e74c3c;
+      --success-color: #27ae60;
+      --error-color: #e74c3c;
+      --text-color: #333;
+      --bg-color: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --max-width: 1200px;
+    }
+
+    /* Tipografie și elemente de bază */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--secondary-color);
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header și navigare */
+    header {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      border-bottom-color: var(--secondary-color);
+    }
+
+    /* Mobile menu */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--primary-color);
+    }
+
+    /* Main content */
+    main {
+      min-height: calc(100vh - 300px);
+      padding: 2rem 0;
+    }
+
+    /* Page header */
+    .page-header {
+      text-align: center;
+      padding: 3rem 0;
+      background: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Contact grid */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Contact form */
+    .contact-form-section {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-form-section h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    .form-group.error input,
+    .form-group.error textarea {
+      border-color: var(--error-color);
+    }
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 1rem;
+      background: var(--secondary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-button:hover {
+      background: #c0392b;
+    }
+
+    .submit-button:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+    }
+
+    /* Success message */
+    .success-message {
+      background: var(--success-color);
+      color: var(--white);
+      padding: 1rem;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+      display: none;
+      text-align: center;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    /* Contact info */
+    .contact-info-section {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-info-section h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-icon {
+      font-size: 1.5rem;
+      color: var(--secondary-color);
+      margin-top: 0.25rem;
+    }
+
+    .info-content h3 {
+      margin-bottom: 0.25rem;
+      color: var(--primary-color);
+    }
+
+    .info-content p {
+      color: #666;
+    }
+
+    /* Map section */
+    .map-section {
+      margin-bottom: 3rem;
+    }
+
+    .map-container {
+      background: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+    }
+
+    /* FAQ section */
+    .faq-section {
+      background: var(--white);
+      padding: 3rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+    }
+
+    .faq-section h2 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .faq-item {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #ecf0f1;
+      padding-bottom: 1.5rem;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .faq-question::after {
+      content: "+";
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      color: #666;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 3rem 0 1rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-section a {
+      color: var(--white);
+      opacity: 0.8;
+      display: block;
+      padding: 0.25rem 0;
+    }
+
+    .footer-section a:hover {
+      opacity: 1;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      opacity: 0.8;
+    }
+
+    /* Help button */
+    .help-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--secondary-color);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border: none;
+    }
+
+    .help-button:hover {
+      transform: scale(1.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .menu-toggle {
+        display: block;
+        z-index: 1001;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+    }
+
+    /* Accessibility */
+    :focus {
+      outline: 2px solid var(--secondary-color);
+      outline-offset: 2px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
-<button id="helpBtn" class="help-button" title="Ai nevoie de ajutor?">?</button>
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo">Clubul de Lectură</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Acasă</a></li>
-      <li><a href="carti.html">Cărți Recomandate</a></li>
-      <li><a href="contact.html" class="active">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- Secțiunea de Contact -->
-  <section class="contact">
-    <h2>Contactează-ne</h2>
-    <form id="contactForm">
-      <label for="nume">Nume:</label>
-      <input type="text" id="nume" required>
-
-      <label for="email">Email:</label>
-      <input type="email" id="email" required>
-
-      <label for="telefon">Telefon:</label>
-      <input type="tel" id="telefon" pattern="[0-9]{10}" required>
-
-      <label for="mesaj">Mesaj:</label>
-      <textarea id="mesaj" required></textarea>
-
-      <button type="submit">Trimite</button>
-    </form>
-
-    <div class="social">
-      <h3>Urmărește-ne:</h3>
-      <a href="https://www.facebook.com/groups/245663805643439"><img src="img/social/facebook.png" alt="Facebook"></a>
-      <a href="https://www.instagram.com/clublecturabga/"><img src="img/social/instagram.png" alt="Instagram"></a>
-      <a href="https://x.com/Libros212"><img src="img/social/twitter.png" alt="Twitter"></a>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="index.html" class="logo">
+          📚 LiteraVie
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Acasă</a></li>
+          <li><a href="carti.html">Cărți</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Meniu navigare">
+          ☰
+        </button>
+      </nav>
     </div>
+  </header>
 
-    <button id="helpBtn">Ajutor?</button>
-  </section>
+  <!-- Main Content -->
+  <main>
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Contactează-ne</h1>
+        <p>Suntem aici să răspundem la întrebările tale</p>
+      </div>
+    </section>
 
+    <div class="container">
+      <!-- Contact Grid -->
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <section class="contact-form-section">
+          <h2>Trimite-ne un mesaj</h2>
+          <div class="success-message" id="successMessage">
+            Mesajul tău a fost trimis cu succes! Te vom contacta în curând.
+          </div>
+          <form id="contactForm" novalidate>
+            <div class="form-group">
+              <label for="name">Nume complet *</label>
+              <input type="text" id="name" name="name" required>
+              <span class="error-message">Te rugăm să introduci numele tău</span>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required>
+              <span class="error-message">Te rugăm să introduci o adresă de email validă</span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" name="phone" placeholder="07XX XXX XXX">
+              <span class="error-message">Te rugăm să introduci un număr de telefon valid</span>
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subiect *</label>
+              <input type="text" id="subject" name="subject" required>
+              <span class="error-message">Te rugăm să introduci un subiect</span>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Mesaj *</label>
+              <textarea id="message" name="message" required></textarea>
+              <span class="error-message">Te rugăm să scrii un mesaj</span>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitButton">
+              Trimite mesajul
+            </button>
+          </form>
+        </section>
+
+        <!-- Contact Info -->
+        <section class="contact-info-section">
+          <h2>Informații de contact</h2>
+          
+          <div class="info-item">
+            <span class="info-icon">📍</span>
+            <div class="info-content">
+              <h3>Adresă</h3>
+              <p>Str. Cărții nr. 10<br>
+              Satu Mare, 440001<br>
+              România</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">📧</span>
+            <div class="info-content">
+              <h3>Email</h3>
+              <p><a href="mailto:contact@literavie.ro">contact@literavie.ro</a></p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">📱</span>
+            <div class="info-content">
+              <h3>Telefon</h3>
+              <p><a href="tel:+40745123456">0745 123 456</a></p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">🕐</span>
+            <div class="info-content">
+              <h3>Program</h3>
+              <p>Luni - Vineri: 10:00 - 19:00<br>
+              Sâmbătă: 10:00 - 14:00<br>
+              Duminică: Închis</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">🌐</span>
+            <div class="info-content">
+              <h3>Social Media</h3>
+              <div class="social-links">
+                <a href="https://www.facebook.com/groups/245663805643439" aria-label="Facebook">f</a>
+                <a href="https://www.instagram.com/clublecturabga/" aria-label="Instagram">i</a>
+                <a href="https://x.com/Libros212" aria-label="Twitter">t</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Map -->
+      <section class="map-section">
+        <div class="map-container">
+          <p>Hartă interactivă - Locația noastră în Satu Mare</p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+        <h2>Întrebări frecvente</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Cum pot deveni membru al clubului de lectură?
+          </div>
+          <div class="faq-answer">
+            Pentru a deveni membru, completează formularul de contact sau vizitează-ne la sediu. Taxa de membru este de 50 RON/an și include acces la toate evenimentele noastre.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Când au loc întâlnirile clubului?
+          </div>
+          <div class="faq-answer">
+            Întâlnirile principale au loc în fiecare joi, de la ora 18:00. Organizăm și evenimente speciale în weekend-uri, despre care anunțăm membrii prin email.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Pot împrumuta cărți din biblioteca clubului?
+          </div>
+          <div class="faq-answer">
+            Da, membrii pot împrumuta până la 3 cărți simultan pentru o perioadă de 21 de zile. Împrumutul este gratuit pentru membri.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Organizați evenimente pentru copii?
+          </div>
+          <div class="faq-answer">
+            Absolut! Avem o secțiune dedicată copiilor cu evenimente de lectură creativă în fiecare sâmbătă dimineața, între orele 10:00-12:00.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Clubul de Lectură</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Despre LiteraVie</h3>
+          <p>Un club de lectură dedicat promovării culturii și pasiunii pentru cărți în comunitatea noastră.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Link-uri Rapide</h3>
+          <a href="index.html">Acasă</a>
+          <a href="carti.html">Cărți</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-section">
+          <h3>Legal</h3>
+          <a href="#">Termeni și condiții</a>
+          <a href="#">Politica de confidențialitate</a>
+          <a href="#">GDPR</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 LiteraVie. Toate drepturile rezervate.</p>
+      </div>
+    </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Help Button -->
+  <button class="help-button" id="helpButton" aria-label="Ajutor">
+    ?
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Form validation and submission
+    const form = document.getElementById('contactForm');
+    const submitButton = document.getElementById('submitButton');
+    const successMessage = document.getElementById('successMessage');
+
+    // Validation patterns
+    const patterns = {
+      name: /^[a-zA-ZăâîșțĂÂÎȘȚ\s]{2,50}$/,
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      phone: /^(\+40|0)[0-9]{9}$/,
+      subject: /^.{3,100}$/,
+      message: /^.{10,1000}$/
+    };
+
+    // Validate individual field
+    function validateField(field) {
+      const value = field.value.trim();
+      const formGroup = field.closest('.form-group');
+      const fieldName = field.name;
+      
+      // Check if field is required and empty
+      if (field.hasAttribute('required') && !value) {
+        formGroup.classList.add('error');
+        return false;
+      }
+      
+      // Check pattern if field has value
+      if (value && patterns[fieldName]) {
+        if (!patterns[fieldName].test(value)) {
+          formGroup.classList.add('error');
+          return false;
+        }
+      }
+      
+      formGroup.classList.remove('error');
+      return true;
+    }
+
+    // Add real-time validation
+    form.querySelectorAll('input, textarea').forEach(field => {
+      field.addEventListener('blur', () => validateField(field));
+      field.addEventListener('input', () => {
+        if (field.closest('.form-group').classList.contains('error')) {
+          validateField(field);
+        }
+      });
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Validate all fields
+      let isValid = true;
+      form.querySelectorAll('input, textarea').forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+      
+      if (!isValid) {
+        // Focus on first error field
+        const firstError = form.querySelector('.form-group.error input, .form-group.error textarea');
+        if (firstError) firstError.focus();
+        return;
+      }
+      
+      // Simulate form submission
+      submitButton.disabled = true;
+      submitButton.textContent = 'Se trimite...';
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Show success message
+      successMessage.classList.add('show');
+      form.reset();
+      
+      // Reset button
+      submitButton.disabled = false;
+      submitButton.textContent = 'Trimite mesajul';
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        successMessage.classList.remove('show');
+      }, 5000);
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // FAQ accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      
+      question.addEventListener('click', () => {
+        // Close other items
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active');
+          }
+        });
+        
+        // Toggle current item
+        item.classList.toggle('active');
+      });
+    });
+
+    // Help button
+    const helpButton = document.getElementById('helpButton');
+    
+    helpButton.addEventListener('click', () => {
+      alert('Ai nevoie de ajutor?\n\n📧 Email: contact@literavie.ro\n📱 Telefon: 0745 123 456\n\nSau completează formularul de contact și te vom contacta în cel mai scurt timp!');
+    });
+  </script>
 </body>
 </html>
