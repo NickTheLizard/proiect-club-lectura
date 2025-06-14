@@ -3,59 +3,875 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cărți Recomandate</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Cărți recomandate de clubul de lectură LiteraVie">
+  <title>Cărți Recomandate - LiteraVie</title>
+  <style>
+    /* Reset și variabile */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #e74c3c;
+      --text-color: #333;
+      --bg-color: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --max-width: 1200px;
+    }
+
+    /* Tipografie și elemente de bază */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--secondary-color);
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header și navigare */
+    header {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      border-bottom-color: var(--secondary-color);
+    }
+
+    /* Mobile menu */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--primary-color);
+    }
+
+    /* Main content */
+    main {
+      min-height: calc(100vh - 300px);
+      padding: 2rem 0;
+    }
+
+    /* Page header */
+    .page-header {
+      text-align: center;
+      padding: 3rem 0;
+      background: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Search and filters */
+    .search-section {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+    }
+
+    .search-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+    }
+
+    .search-button {
+      padding: 0.75rem 1.5rem;
+      background: var(--secondary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-button:hover {
+      background: #c0392b;
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tag {
+      padding: 0.5rem 1rem;
+      background: #ecf0f1;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-tag:hover,
+    .filter-tag.active {
+      background: var(--primary-color);
+      color: var(--white);
+    }
+
+    /* Books grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .book-card {
+      background: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+
+    .book-cover {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    .book-info {
+      padding: 1.5rem;
+    }
+
+    .book-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .book-author {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .book-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #ecf0f1;
+    }
+
+    .book-rating {
+      display: flex;
+      gap: 0.25rem;
+      color: #f39c12;
+    }
+
+    .book-genre {
+      font-size: 0.85rem;
+      padding: 0.25rem 0.75rem;
+      background: #ecf0f1;
+      border-radius: 15px;
+      color: #666;
+    }
+
+    /* Book detail modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 2000;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: var(--white);
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 10px;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal-close:hover {
+      color: var(--primary-color);
+    }
+
+    .modal-book-details {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .modal-book-cover {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .modal-book-info h2 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-book-info .author {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .book-description {
+      line-height: 1.8;
+      margin-top: 1rem;
+    }
+
+    /* Results info */
+    .results-info {
+      text-align: center;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #666;
+    }
+
+    .no-results h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 3rem 0 1rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-section a {
+      color: var(--white);
+      opacity: 0.8;
+      display: block;
+      padding: 0.25rem 0;
+    }
+
+    .footer-section a:hover {
+      opacity: 1;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      opacity: 0.8;
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--secondary-color);
+      color: var(--white);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Loading state */
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+
+    .loading::after {
+      content: "...";
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: "."; }
+      40% { content: ".."; }
+      60%, 100% { content: "..."; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .menu-toggle {
+        display: block;
+        z-index: 1001;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .search-container {
+        flex-direction: column;
+      }
+
+      .books-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-book-details {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-book-cover {
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+    }
+
+    /* Accessibility */
+    :focus {
+      outline: 2px solid var(--secondary-color);
+      outline-offset: 2px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="index.html" class="logo">
+          📚 LiteraVie
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Acasă</a></li>
+          <li><a href="carti.html" class="active">Cărți</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Meniu navigare">
+          ☰
+        </button>
+      </nav>
+    </div>
+  </header>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo">Clubul de Lectură</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Acasă</a></li>
-      <li><a href="carti.html" class="active">Cărți Recomandate</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <!-- Main Content -->
+  <main>
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Biblioteca Noastră</h1>
+        <p>Descoperă cărți care inspiră, educă și captivează</p>
+      </div>
+    </section>
 
-  <!-- Secțiune Cărți Recomandate -->
-  <section class="carti">
-    <h2>Cărți Recomandate</h2>
+    <div class="container">
+      <!-- Search and Filters -->
+      <div class="search-section">
+        <div class="search-container">
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Caută după titlu, autor sau ISBN..."
+            aria-label="Caută cărți"
+          >
+          <button class="search-button" id="searchButton">
+            Caută
+          </button>
+        </div>
+        <div class="filter-tags">
+          <button class="filter-tag active" data-genre="toate">Toate</button>
+          <button class="filter-tag" data-genre="roman">Roman</button>
+          <button class="filter-tag" data-genre="psihologic">Psihologic</button>
+          <button class="filter-tag" data-genre="clasic">Clasic</button>
+          <button class="filter-tag" data-genre="filosofie">Filosofie</button>
+          <button class="filter-tag" data-genre="stiinta">Știință</button>
+        </div>
+      </div>
 
-<div class="search-container">
-  <input type="text" id="searchInput" placeholder="Caută o carte sau un autor...">
-</div>
+      <!-- Results info -->
+      <div class="results-info" id="resultsInfo">
+        <p>Se afișează <strong id="resultsCount">12</strong> cărți</p>
+      </div>
 
-    <div class="card">
-      <img src="img/carti/carte1.jpg" alt="Idiotul">
-      <div class="card-info">
-        <h3>Titlu Idiotul</h3>
-     
-<p class="autor"><strong>Autor:</strong> Fiodor Dostoievski</p>
+      <!-- Books Grid -->
+      <div class="books-grid" id="booksGrid">
+        <!-- Book 1 -->
+        <article class="book-card" data-genre="roman psihologic clasic" data-book-id="1">
+          <img src="img/carti/carte1.jpg" alt="Coperta carte Idiotul" class="book-cover">
+          <div class="book-info">
+            <h2 class="book-title">Idiotul</h2>
+            <p class="book-author">Fiodor Dostoievski</p>
+            <div class="book-meta">
+              <div class="book-rating">
+                <span>★★★★★</span>
+              </div>
+              <span class="book-genre">Clasic</span>
+            </div>
+          </div>
+        </article>
 
-        <p>„Idiotul” de Fiodor Dostoievski este un roman psihologic care urmărește povestea prințului Lev Nikolaevici Mîșkin, un tânăr cu o inimă pură, sinceră și plină de compasiune, care se întoarce în Rusia după un tratament pentru epilepsie în Elveția. În ciuda inteligenței sale, Mîșkin este perceput ca „idiot” de către societatea superficială și coruptă în care intră.
+        <!-- Book 2 -->
+        <article class="book-card" data-genre="roman psihologic clasic" data-book-id="2">
+          <img src="img/carti/carte2.jpg" alt="Coperta carte Crimă și pedeapsă" class="book-cover">
+          <div class="book-info">
+            <h2 class="book-title">Crimă și pedeapsă</h2>
+            <p class="book-author">Fiodor Dostoievski</p>
+            <div class="book-meta">
+              <div class="book-rating">
+                <span>★★★★★</span>
+              </div>
+              <span class="book-genre">Psihologic</span>
+            </div>
+          </div>
+        </article>
 
-Romanul explorează conflictele dintre bine și rău, inocență și decădere morală, în contextul relațiilor complexe dintre Mîșkin, frumoasa și zbuciumata Nastasja Filippovna și ambițioasa Aglaia Epancina. Prin Mîșkin, Dostoievski încearcă să portretizeze idealul creștin de bunătate absolută, dar arată cum o asemenea puritate poate părea nepotrivită și tragică într-o lume cinică.</p>
+        <!-- Book 3 -->
+        <article class="book-card" data-genre="roman clasic" data-book-id="3">
+          <img src="img/carti/carte3.jpg" alt="Coperta carte 1984" class="book-cover">
+          <div class="book-info">
+            <h2 class="book-title">1984</h2>
+            <p class="book-author">George Orwell</p>
+            <div class="book-meta">
+              <div class="book-rating">
+                <span>★★★★★</span>
+              </div>
+              <span class="book-genre">Clasic</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Book 4 -->
+        <article class="book-card" data-genre="roman clasic" data-book-id="4">
+          <img src="img/carti/carte4.jpg" alt="Coperta carte Mândrie și prejudecată" class="book-cover">
+          <div class="book-info">
+            <h2 class="book-title">Mândrie și prejudecată</h2>
+            <p class="book-author">Jane Austen</p>
+            <div class="book-meta">
+              <div class="book-rating">
+                <span>★★★★☆</span>
+              </div>
+              <span class="book-genre">Clasic</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- More books can be added here -->
+      </div>
+
+      <!-- No results message -->
+      <div class="no-results" id="noResults" style="display: none;">
+        <h3>Nu am găsit nicio carte</h3>
+        <p>Încearcă să cauți cu alți termeni sau să schimbi filtrele.</p>
       </div>
     </div>
+  </main>
 
-    <div class="card">
-      <img src="img/carti/carte2.jpg" alt="Crimă și pedeapsă">
-      <div class="card-info">
-        <h3>Titlu Crimă și pedeapsă</h3>
-        <p class="autor"><strong>Autor:</strong> Fiodor Dostoievski</p>
-
-        <p>„Crimă și pedeapsă” de Fiodor Dostoievski este un roman psihologic ce urmărește lupta interioară a lui Raskolnikov, un student sărac din Sankt Petersburg, care comite o crimă considerând că scopul său justifică mijloacele. Pe măsură ce vinovăția îl macină, începe un proces de tortură psihologică și căutare a mântuirii, într-o profundă reflecție asupra moralei, justiției și conștiinței.</p>
+  <!-- Book Detail Modal -->
+  <div class="modal" id="bookModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" aria-label="Închide">×</button>
+      <div class="modal-book-details" id="modalContent">
+        <!-- Content will be dynamically inserted -->
       </div>
     </div>
+  </div>
 
-    <!-- Adaugă mai multe cărți după nevoie -->
-  </section>
-
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Clubul de Lectură</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Despre LiteraVie</h3>
+          <p>Un club de lectură dedicat promovării culturii și pasiunii pentru cărți în comunitatea noastră.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/groups/245663805643439" aria-label="Facebook">f</a>
+            <a href="https://www.instagram.com/clublecturabga/" aria-label="Instagram">i</a>
+            <a href="https://x.com/Libros212" aria-label="Twitter">t</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Link-uri Rapide</h3>
+          <a href="index.html">Acasă</a>
+          <a href="carti.html">Cărți</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-section">
+          <h3>Newsletter</h3>
+          <p>Abonează-te pentru a primi recomandări săptămânale.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 LiteraVie. Toate drepturile rezervate.</p>
+      </div>
+    </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop" aria-label="Înapoi sus">
+    ↑
+  </button>
+
+  <script>
+    // Book data
+    const bookDetails = {
+      1: {
+        title: "Idiotul",
+        author: "Fiodor Dostoievski",
+        cover: "img/carti/carte1.jpg",
+        description: "„Idiotul" este un roman psihologic care urmărește povestea prințului Lev Nikolaevici Mîșkin, un tânăr cu o inimă pură, sinceră și plină de compasiune. Romanul explorează conflictele dintre bine și rău, inocență și decădere morală, în contextul relațiilor complexe dintre personaje.",
+        year: "1869",
+        pages: "656",
+        isbn: "978-606-40-0123-4"
+      },
+      2: {
+        title: "Crimă și pedeapsă",
+        author: "Fiodor Dostoievski",
+        cover: "img/carti/carte2.jpg",
+        description: "Un roman psihologic ce urmărește lupta interioară a lui Raskolnikov, un student sărac din Sankt Petersburg, care comite o crimă considerând că scopul său justifică mijloacele. O profundă reflecție asupra moralei, justiției și conștiinței.",
+        year: "1866",
+        pages: "545",
+        isbn: "978-606-40-0124-1"
+      },
+      3: {
+        title: "1984",
+        author: "George Orwell",
+        cover: "img/carti/carte3.jpg",
+        description: "O distopie captivantă despre un viitor totalitar în care guvernul controlează fiecare aspect al vieții. Winston Smith luptă pentru libertate într-o lume dominată de supraveghere și manipulare.",
+        year: "1949",
+        pages: "328",
+        isbn: "978-606-40-0125-8"
+      },
+      4: {
+        title: "Mândrie și prejudecată",
+        author: "Jane Austen",
+        cover: "img/carti/carte4.jpg",
+        description: "O poveste clasică despre dragoste și clasele sociale în Anglia secolului XIX. Elizabeth Bennet și Mr. Darcy depășesc orgoliul și prejudecățile pentru a descoperi dragostea adevărată.",
+        year: "1813",
+        pages: "432",
+        isbn: "978-606-40-0126-5"
+      }
+    };
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const booksGrid = document.getElementById('booksGrid');
+    const bookCards = document.querySelectorAll('.book-card');
+    const noResults = document.getElementById('noResults');
+    const resultsCount = document.getElementById('resultsCount');
+
+    function performSearch() {
+      const searchTerm = searchInput.value.toLowerCase();
+      let visibleCount = 0;
+
+      bookCards.forEach(card => {
+        const title = card.querySelector('.book-title').textContent.toLowerCase();
+        const author = card.querySelector('.book-author').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || author.includes(searchTerm)) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      resultsCount.textContent = visibleCount;
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+
+    // Filter functionality
+    const filterTags = document.querySelectorAll('.filter-tag');
+
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        // Update active state
+        filterTags.forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+
+        const selectedGenre = tag.dataset.genre;
+        let visibleCount = 0;
+
+        bookCards.forEach(card => {
+          if (selectedGenre === 'toate' || card.dataset.genre.includes(selectedGenre)) {
+            card.style.display = 'block';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        resultsCount.textContent = visibleCount;
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      });
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('bookModal');
+    const modalContent = document.getElementById('modalContent');
+    const modalClose = document.getElementById('modalClose');
+
+    bookCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const bookId = card.dataset.bookId;
+        const book = bookDetails[bookId];
+        
+        if (book) {
+          modalContent.innerHTML = `
+            <img src="${book.cover}" alt="Coperta ${book.title}" class="modal-book-cover">
+            <div class="modal-book-info">
+              <h2>${book.title}</h2>
+              <p class="author">de ${book.author}</p>
+              <p><strong>An publicare:</strong> ${book.year}</p>
+              <p><strong>Număr pagini:</strong> ${book.pages}</p>
+              <p><strong>ISBN:</strong> ${book.isbn}</p>
+              <div class="book-description">
+                <h3>Descriere</h3>
+                <p>${book.description}</p>
+              </div>
+            </div>
+          `;
+          modal.style.display = 'block';
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Back to top button
+    const backToTop = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
 </body>
 </html>
