@@ -1,64 +1,590 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LiteraVie - Club de lectură unde pasiunea pentru cărți prinde viață">
   <title>LiteraVie - Club de Lectură</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* Reset și variabile */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #e74c3c;
+      --text-color: #333;
+      --bg-color: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --max-width: 1200px;
+    }
+
+    /* Tipografie și elemente de bază */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--secondary-color);
+    }
+
+    h1, h2, h3 {
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header și navigare */
+    header {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      border-bottom-color: var(--secondary-color);
+    }
+
+    /* Mobile menu */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--primary-color);
+    }
+
+    /* Hero section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-color), #34495e);
+      color: var(--white);
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--secondary-color);
+      color: var(--white);
+      padding: 0.75rem 2rem;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+      color: var(--white);
+    }
+
+    /* Features section */
+    .features {
+      padding: 4rem 0;
+      background: var(--white);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Recent books */
+    .recent-books {
+      padding: 4rem 0;
+    }
+
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .book-card {
+      background: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+
+    .book-cover {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .book-info {
+      padding: 1rem;
+    }
+
+    .book-info h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .book-author {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 3rem 0 1rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-section a {
+      color: var(--white);
+      opacity: 0.8;
+      display: block;
+      padding: 0.25rem 0;
+    }
+
+    .footer-section a:hover {
+      opacity: 1;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      opacity: 0.8;
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--secondary-color);
+      color: var(--white);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .menu-toggle {
+        display: block;
+        z-index: 1001;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .books-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+    }
+
+    /* Accessibility */
+    :focus {
+      outline: 2px solid var(--secondary-color);
+      outline-offset: 2px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- Header -->
   <header>
-    <nav class="navbar">
-      <div class="logo">📖 LiteraVie</div>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Acasă</a></li>
-        <li><a href="carti.html">Cărți Recomandate</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="container">
+      <nav>
+        <div class="logo">
+           LiteraVie
+        </div>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="active">Acasă</a></li>
+          <li><a href="#about">Despre</a></li>
+          <li><a href="#books">Cărți</a></li>
+          <li><a href="#events">Evenimente</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Meniu navigare">
+          ☰
+        </button>
+      </nav>
+    </div>
   </header>
 
-  <!-- Carusel -->
-  <section class="carousel">
-    <div class="carousel-track">
-      <img src="img/slide1.jpg">
-      <img src="img/slide2.jpg">
-      <img src="img/slide3.jpg">
-      <img src="img/slide4.jpg">
-      <img src="img/slide1.jpg">
-      <img src="img/slide2.jpg">
-      <img src="img/slide3.jpg">
-      <img src="img/slide4.jpg">
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <h1>Bine ai venit la LiteraVie</h1>
+      <p>Descoperă o comunitate vibrantă de iubitori de cărți. Participă la discuții, evenimente și împărtășește pasiunea pentru lectură.</p>
+      <a href="#books" class="cta-button">Explorează Cărțile</a>
     </div>
   </section>
 
-  <!-- Secțiune introductivă -->
-  <section class="intro">
-    <h1>Bine ai venit la LiteraVie</h1>
-    <p>Un loc unde pasiunea pentru lectură prinde viață. Descoperă cărți, participă la evenimente și împărtășește idei!</p>
+  <!-- Features -->
+  <section class="features" id="about">
+    <div class="container">
+      <h2 style="text-align: center; color: var(--primary-color);">De ce LiteraVie?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📖</div>
+          <h3>Cărți Selectate</h3>
+          <p>Recomandări atent alese de comunitatea noastră de cititori pasionați.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Discuții Vii</h3>
+          <p>Participă la dezbateri captivante despre cărțile tale preferate.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Evenimente Lunare</h3>
+          <p>Întâlniri regulate cu autori, sesiuni de lectură și ateliere creative.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- Video -->
-  <section class="video">
-  <h2>Lectura creează lumi</h2>
-    <video controls autoplay muted loop>
-  <source src="video/reading.mp4" type="video/mp4">
-</video>
-
-  <!-- Social Media -->
-  <footer>
-    <div class="social-icons">
-      <a href="https://www.facebook.com/groups/245663805643439"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/clublecturabga/"><i class="fab fa-instagram"></i></a>
-      <a href="https://x.com/Libros212"><i class="fab fa-twitter"></i></a>
+  <!-- Recent Books -->
+  <section class="recent-books" id="books">
+    <div class="container">
+      <h2 style="text-align: center; color: var(--primary-color);">Cărți Recomandate</h2>
+      <div class="books-grid">
+        <div class="book-card">
+          <img src="img/carti/carte1.jpg" alt="Coperta carte Idiotul" class="book-cover">
+          <div class="book-info">
+            <h3>Idiotul</h3>
+            <p class="book-author">Fiodor Dostoievski</p>
+          </div>
+        </div>
+        <div class="book-card">
+          <img src="img/carti/carte2.jpg" alt="Coperta carte Crimă și pedeapsă" class="book-cover">
+          <div class="book-info">
+            <h3>Crimă și pedeapsă</h3>
+            <p class="book-author">Fiodor Dostoievski</p>
+          </div>
+        </div>
+        <div class="book-card">
+          <img src="img/carti/carte3.jpg" alt="Coperta carte" class="book-cover">
+          <div class="book-info">
+            <h3>1984</h3>
+            <p class="book-author">George Orwell</p>
+          </div>
+        </div>
+        <div class="book-card">
+          <img src="img/carti/carte4.jpg" alt="Coperta carte" class="book-cover">
+          <div class="book-info">
+            <h3>Mândrie și prejudecată</h3>
+            <p class="book-author">Jane Austen</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <p>&copy; 2025 LiteraVie. Toate drepturile rezervate.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Despre LiteraVie</h3>
+          <p>Un club de lectură dedicat promovării culturii și pasiunii pentru cărți în comunitatea noastră.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/groups/245663805643439" aria-label="Facebook">f</a>
+            <a href="https://www.instagram.com/clublecturabga/" aria-label="Instagram">i</a>
+            <a href="https://x.com/Libros212" aria-label="Twitter">t</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Link-uri Rapide</h3>
+          <a href="#home">Acasă</a>
+          <a href="#about">Despre Noi</a>
+          <a href="#books">Cărți</a>
+          <a href="#events">Evenimente</a>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: contact@literavie.ro</p>
+          <p>Telefon: 0745 123 456</p>
+          <p>Adresă: Str. Cărții nr. 10, Satu Mare</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 LiteraVie. Toate drepturile rezervate.</p>
+      </div>
+    </div>
   </footer>
 
-  <!-- Buton Up -->
-  <button id="btnUp">&#8679;</button>
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop" aria-label="Înapoi sus">
+    ↑
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Close menu when clicking on a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuToggle.textContent = '☰';
+      });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Back to top button
+    const backToTop = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Active navigation highlighting
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= (sectionTop - 200)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href').slice(1) === current) {
+          item.classList.add('active');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
